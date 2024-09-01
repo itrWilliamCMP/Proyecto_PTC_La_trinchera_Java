@@ -23,6 +23,7 @@ public class frmMenus_PTC extends javax.swing.JFrame {
         jPanel = new java.awt.Panel();
         panel1 = new java.awt.Panel();
         label3 = new java.awt.Label();
+        btnRegresarMenu = new javax.swing.JButton();
         label2 = new java.awt.Label();
         label1 = new java.awt.Label();
         txtCategoria = new javax.swing.JTextField();
@@ -43,20 +44,31 @@ public class frmMenus_PTC extends javax.swing.JFrame {
 
         label3.setText("Menús");
 
+        btnRegresarMenu.setText("Regresar");
+        btnRegresarMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarMenuActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(336, 336, 336)
+                .addGap(34, 34, 34)
+                .addComponent(btnRegresarMenu)
+                .addGap(223, 223, 223)
                 .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(364, Short.MAX_VALUE))
+                .addContainerGap(363, Short.MAX_VALUE))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnRegresarMenu)
+                    .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -152,6 +164,16 @@ public class frmMenus_PTC extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRegresarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarMenuActionPerformed
+
+        FrmMenuPrincipal newframe = new FrmMenuPrincipal();  
+        
+        newframe.setVisible(true);
+            
+        this.dispose();
+        
+    }//GEN-LAST:event_btnRegresarMenuActionPerformed
+
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -190,6 +212,7 @@ public class frmMenus_PTC extends javax.swing.JFrame {
     public javax.swing.JButton btnEliminar;
     public javax.swing.JButton btnGuardar;
     public javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnRegresarMenu;
     private java.awt.Panel jPanel;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTable jtbMenu;
