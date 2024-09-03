@@ -165,11 +165,7 @@ public class frmMenus_PTC extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarMenuActionPerformed
-
-        FrmMenuPrincipal newframe = new FrmMenuPrincipal();  
-        
-        newframe.setVisible(true);
-            
+           
         this.dispose();
         
     }//GEN-LAST:event_btnRegresarMenuActionPerformed

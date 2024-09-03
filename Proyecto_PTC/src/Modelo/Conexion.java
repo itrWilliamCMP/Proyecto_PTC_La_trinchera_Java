@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Conexion {
         //Variables para la cadena de conexión
-    private static final String URL = "jdbc:oracle:thin:@192.168.148.5:1521:xe";
+    private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
     private static final String USUARIO = "WILLIAM_DEVELOPER";
     private static final String CONTRASENA = "123456";
     
@@ -16,6 +16,8 @@ public class Conexion {
 
             // Obtener la conexión en una variable
             Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRASENA);
+            
+            conexion.setAutoCommit(true);
             
             // Retornamos la variable que tiene la conexión
             return conexion;
