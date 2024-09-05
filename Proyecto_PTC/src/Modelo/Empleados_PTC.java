@@ -60,43 +60,51 @@ public class Empleados_PTC {
 
     // Método para guardar empleado (Insertar)
     public void Guardar() {
-        Connection conexion = Conexion.getConexion();
-        
-        System.out.println("usuario: "+getUsuario_empleado());
-         System.out.println("correoElectronico: "+getCorreoElectronico());
-          System.out.println("contrasena_empleado: "+getContrasena_empleado());
-        
-        try {
-            PreparedStatement addEmpleado = conexion.prepareStatement("INSERT INTO Empleados_PTC (usuario_empleado, correoElectronico, contrasena_empleado) VALUES (?, ?, ?)");
+    Connection conexion = Conexion.getConexion();
+    
+    // Obtener la contraseña en formato hash
+    String contrasenaHash = HashUtil.generateSHA512Hash(getContrasena_empleado());
 
-            addEmpleado.setString(1, getUsuario_empleado());
-            addEmpleado.setString(2, getCorreoElectronico());
-            addEmpleado.setString(3, getContrasena_empleado());
+    System.out.println("usuario: " + getUsuario_empleado());
+    System.out.println("correoElectronico: " + getCorreoElectronico());
+    System.out.println("contrasena_empleado: " + contrasenaHash);
 
-            addEmpleado.executeUpdate();
- 
-        } catch (SQLException ex) {
-            System.out.println("Error en el modelo: método Guardar " + ex);
-        }
+    try {
+        PreparedStatement addEmpleado = conexion.prepareStatement("INSERT INTO Empleados_PTC (usuario_empleado, correoElectronico, contrasena_empleado) VALUES (?, ?, ?)");
+
+        addEmpleado.setString(1, getUsuario_empleado());
+        addEmpleado.setString(2, getCorreoElectronico());
+        addEmpleado.setString(3, contrasenaHash);
+
+        addEmpleado.executeUpdate();
+
+    } catch (SQLException ex) {
+        System.out.println("Error en el modelo: método Guardar " + ex);
     }
+}
 
-    // Método para actualizar empleado (solo usuario, correo y contraseña)
-    public void Actualizar(JTable tabla) {
-        Connection conexion = Conexion.getConexion();
-        try {
-            PreparedStatement updateEmpleado = conexion.prepareStatement("UPDATE Empleados_PTC SET usuario_empleado = ?, correoElectronico = ?, contrasena_empleado = ? WHERE id_empleado = ?");
+// Método para actualizar empleado (solo usuario, correo y contraseña)
+public void Actualizar(JTable tabla) {
+    Connection conexion = Conexion.getConexion();
+    
+    // Obtener la contraseña en formato hash
+    String contrasenaHash = HashUtil.generateSHA512Hash(getContrasena_empleado());
 
-            updateEmpleado.setString(1, getUsuario_empleado());
-            updateEmpleado.setString(2, getCorreoElectronico());
-            updateEmpleado.setString(3, getContrasena_empleado());
-            updateEmpleado.setInt(4, getId_empleado());
+    try {
+        PreparedStatement updateEmpleado = conexion.prepareStatement("UPDATE Empleados_PTC SET usuario_empleado = ?, correoElectronico = ?, contrasena_empleado = ? WHERE id_empleado = ?");
 
-            updateEmpleado.executeUpdate();
- 
-        } catch (SQLException ex) {
-            System.out.println("Error en el modelo: método Actualizar " + ex);
-        }
+        updateEmpleado.setString(1, getUsuario_empleado());
+        updateEmpleado.setString(2, getCorreoElectronico());
+        updateEmpleado.setString(3, contrasenaHash);
+        updateEmpleado.setInt(4, getId_empleado());
+
+        updateEmpleado.executeUpdate();
+
+    } catch (SQLException ex) {
+        System.out.println("Error en el modelo: método Actualizar " + ex);
     }
+}
+
     
     public void limpiar(FrmEmpleados_PTC vista) {
         vista.txtUsuarios.setText("");
