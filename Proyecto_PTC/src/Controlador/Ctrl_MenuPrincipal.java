@@ -31,13 +31,12 @@ public class Ctrl_MenuPrincipal implements ActionListener {
         }
 
         if (e.getSource() == formMenuPrincipal.btnMenu) {
-            abrirMenuRest();
+            abrirMenuPTC();
         }
         
         if (e.getSource() == formMenuPrincipal.btnUsuarios) {
             abrirEmpleados();
-        }
-        
+        }   
     } 
     
     private void cerrar() {    
@@ -66,11 +65,9 @@ public class Ctrl_MenuPrincipal implements ActionListener {
         });             
     }
     
-        private void abrirMenuRest() {
- // Ocultar el formulario de ingreso de usuario
+        private void abrirMenuPTC() {
         formMenuPrincipal.setVisible(false);
         
-        // Crea el formulario y el controlador
         frmMenus_PTC vista = new frmMenus_PTC();
         Menus_PTC modelo = new Menus_PTC();
         
@@ -78,14 +75,13 @@ public class Ctrl_MenuPrincipal implements ActionListener {
       
         vista.setVisible(true);  
         
-        // Agregar un listener para mostrar el formulario de ingreso cuando se cierre el de recuperación
         vista.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                // Mostrar nuevamente el formulario de ingreso de usuario
                 formMenuPrincipal.setVisible(true);
             }
         });             
     }
+    
 }
 

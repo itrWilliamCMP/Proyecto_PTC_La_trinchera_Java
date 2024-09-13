@@ -74,6 +74,11 @@ public class Menus_PTC {
         }
     }
         
+        public void limpiar(frmMenus_PTC vista) {
+        vista.txtCategoria.setText("");
+        vista.txtImagen.setText("");
+    }
+            
         public void Eliminar(JTable tabla) {
         Connection conexion = Conexion.getConexion();
         try {
