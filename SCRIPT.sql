@@ -8,8 +8,6 @@ direccion_entrega VARCHAR2(300),
 imagen_Clientes varchar2(250)
 );
 
-
-
 create table Empleados_PTC( 
 id_empleado number PRIMARY KEY, 
 usuario_empleado varchar2(15), 
@@ -24,15 +22,11 @@ categoria varchar2(20),
 imagen_categoria varchar2(250)
 ); 
 
-
-
 create table Permisos_PTC( 
 id_permiso number PRIMARY KEY, 
 permiso number, 
 motivopermiso char(15) 
 ); 
-
-
 
 CREATE TABLE PEDIDOS_PTC( 
     id_pedido NUMBER PRIMARY KEY, 
@@ -58,8 +52,6 @@ CONSTRAINT FK_id_pedido_pedido1 FOREIGN KEY (id_pedido) REFERENCES PEDIDOS_PTC(i
 CONSTRAINT FK_id_producto_producto1 FOREIGN KEY (id_producto) REFERENCES Detalle_Productos_PTC(id_producto) 
 ); 
 
-
-
 create table PermisosEmpelado_PTC( 
 id_permisoempl number PRIMARY KEY, 
 id_permiso number, 
@@ -68,8 +60,6 @@ habilitado number,
 CONSTRAINT FK_id_permiso1 FOREIGN KEY (id_permiso) REFERENCES Permisos_PTC(id_permiso), 
 CONSTRAINT FK_id_empleado2 FOREIGN KEY (id_empleado) REFERENCES Empleados_PTC(id_empleado) 
 ); 
-
-
 
 create table Detalle_Productos_PTC( 
 id_producto number PRIMARY KEY, 
@@ -103,7 +93,6 @@ CONSTRAINT FK_id_movinv_movinv1 FOREIGN KEY (id_movinv) REFERENCES MovsInventari
 CONSTRAINT FK_id_producto_producto4 FOREIGN KEY (id_producto) REFERENCES Detalle_Productos_PTC(id_producto) 
 ); 
 
-
 create table MovsInventario_PTC( 
 id_movinv number PRIMARY KEY, 
 mov_no number, 
@@ -126,10 +115,10 @@ DROP TABLE DetallePedidos_PTC;
 drop table clientes_ptc;
 
 
-
 ----------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------TRIGGER Y SECUENCIAS-----------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------------
+
 
 -- Secuencia y trigger para clientes_PTC
 CREATE SEQUENCE clientes_seq START WITH 1 INCREMENT BY 1;
@@ -228,15 +217,12 @@ BEGIN
     SELECT Menus_seq.NEXTVAL INTO :NEW.id_menu FROM dual;
 END;
 
-
-
 select * from Detalle_Productos_PTC ;
 
 INSERT INTO Menus_PTC ( categoria, imagen_categoria) VALUES ( 'Tacos', 'antojitos.jpg');
 INSERT INTO Menus_PTC ( categoria, imagen_categoria) VALUES ( 'Tortas', 'platos_fuertes.jpg');
 INSERT INTO Menus_PTC ( categoria, imagen_categoria) VALUES ( 'Burritos', 'postres.jpg');
 INSERT INTO Menus_PTC ( categoria, imagen_categoria) VALUES ( 'Chiles', 'bebidas.jpg');
-
 
 INSERT INTO Detalle_Productos_PTC ( id_menu, producto, descripcion, precioventa, stock, imagen_comida) VALUES (  1,'Tacos al Pastor', 'Tacos de carne de cerdo adobada con pi?a y cebolla', 3.00, 50, 'tacos_al_pastor.jpg');
 INSERT INTO Detalle_Productos_PTC ( id_menu,producto, descripcion, precioventa, stock, imagen_comida) VALUES ( 2,'Tacos de pollo', 'Tacos de pollo muy buenos', 2.50, 30, 'jpg');
@@ -267,5 +253,5 @@ Select id_menu from Menus_PTC;
  ON Menus_PTC.id_menu = Detalle_Productos_PTC.id_menu
  ;
  
- DELETE FROM Detalle_Productos_PTC
+DELETE FROM Detalle_Productos_PTC
 WHERE ID_MENU IS NULL;
