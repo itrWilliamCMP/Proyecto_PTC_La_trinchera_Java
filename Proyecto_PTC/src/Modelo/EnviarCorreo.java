@@ -12,10 +12,10 @@ import javax.mail.internet.MimeMessage;
 
 public class EnviarCorreo {
 
-    private static final String SMTP_HOST = "dsbfhuds@kdnmfjiksd.com"; //colocar correo valido
+    private static final String SMTP_HOST = "mail.latrinchera.rest"; //colocar correo valido
     private static final String SMTP_PORT = "465";
-    private static final String SMTP_USER = "ejemplo@ejemplo.com"; // Deben colocar su correo.
-    private static final String SMTP_PASSWORD = "hudfhgudf fdguhduifhg fgdhuighfdui";  // Reemplaza con la contraseña real
+    private static final String SMTP_USER = "notificacion@latrinchera.rest"; // Deben colocar su correo.
+    private static final String SMTP_PASSWORD = "BBE925cywaG5";  // Reemplaza con la contraseña real
 
     public static boolean enviarCorreoConCodigo(String toEmail, String codigoVerificacion) {
 
