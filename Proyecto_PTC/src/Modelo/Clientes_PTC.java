@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JTable;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Clientes_PTC {
@@ -68,7 +69,7 @@ public class Clientes_PTC {
             }
             tabla.setModel(modeloClientes);
         } catch (SQLException ex) {
-            System.out.println("Error en el modelo: método Mostrar " + ex);
+            JOptionPane.showMessageDialog(null, "Error al mostrar los datos: " + ex.getMessage(), "Mensaje", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -85,10 +86,15 @@ public class Clientes_PTC {
             updateCliente.setString(3, getDireccion_entrega());
             updateCliente.setInt(4, getId_cliente());
 
-            updateCliente.executeUpdate();
+            int result = updateCliente.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Cliente actualizado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo actualizar el cliente", "Mensaje", JOptionPane.ERROR_MESSAGE);
+            }
 
         } catch (SQLException ex) {
-            System.out.println("Error en el modelo: método Actualizar " + ex);
+            JOptionPane.showMessageDialog(null, "Error al actualizar el cliente: " + ex.getMessage(), "Mensaje", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -100,10 +106,15 @@ public class Clientes_PTC {
 
             deleteCliente.setInt(1, getId_cliente());
 
-            deleteCliente.executeUpdate();
+            int result = deleteCliente.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Cliente eliminado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar el cliente", "Mensaje", JOptionPane.ERROR_MESSAGE);
+            }
 
         } catch (SQLException ex) {
-            System.out.println("Error en el modelo: método Eliminar " + ex);
+            JOptionPane.showMessageDialog(null, "Error al eliminar el cliente: " + ex.getMessage(), "Mensaje", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -116,21 +127,22 @@ public class Clientes_PTC {
 
     // Método para cargar datos de la tabla del formulario
     public void cargarDatosTabla(FrmClientes_PTC vista) {
-    int filaSeleccionada = vista.jtblClientes.getSelectedRow();
+        int filaSeleccionada = vista.jtblClientes.getSelectedRow();
     
-    if (filaSeleccionada != -1) {
-        Object id_cliente = vista.jtblClientes.getValueAt(filaSeleccionada, 0);
-        Object nombre_clie = vista.jtblClientes.getValueAt(filaSeleccionada, 1);
-        Object correoElectronico = vista.jtblClientes.getValueAt(filaSeleccionada, 2);
-        Object direccion_entrega = vista.jtblClientes.getValueAt(filaSeleccionada, 3);
+        if (filaSeleccionada != -1) {
+            Object id_cliente = vista.jtblClientes.getValueAt(filaSeleccionada, 0);
+            Object nombre_clie = vista.jtblClientes.getValueAt(filaSeleccionada, 1);
+            Object correoElectronico = vista.jtblClientes.getValueAt(filaSeleccionada, 2);
+            Object direccion_entrega = vista.jtblClientes.getValueAt(filaSeleccionada, 3);
 
-        // Validar si los valores son null antes de convertirlos a string
-        setId_cliente(id_cliente != null ? Integer.parseInt(id_cliente.toString()) : 0);
+            // Validar si los valores son null antes de convertirlos a string
+            setId_cliente(id_cliente != null ? Integer.parseInt(id_cliente.toString()) : 0);
         
-        vista.txtNombreCliente.setText(nombre_clie != null ? nombre_clie.toString() : "");
-        vista.txtCorreo.setText(correoElectronico != null ? correoElectronico.toString() : "");
-        vista.txtDirrecion.setText(direccion_entrega != null ? direccion_entrega.toString() : "");
+            vista.txtNombreCliente.setText(nombre_clie != null ? nombre_clie.toString() : "");
+            vista.txtCorreo.setText(correoElectronico != null ? correoElectronico.toString() : "");
+            vista.txtDirrecion.setText(direccion_entrega != null ? direccion_entrega.toString() : "");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ningún cliente", "Mensaje", JOptionPane.ERROR_MESSAGE);
+        }
     }
-}
-
 }

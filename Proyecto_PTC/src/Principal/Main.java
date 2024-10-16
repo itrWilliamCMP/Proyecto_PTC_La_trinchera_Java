@@ -22,7 +22,7 @@ public class Main {
         FrmIngresoUsuario vista = new FrmIngresoUsuario();
         IngresoUsuario modelo = new IngresoUsuario();
         Ctrl_IngresoUsuario controlador = new Ctrl_IngresoUsuario(vista,modelo);
-
+        vista.setDefaultCloseOperation(vista.DO_NOTHING_ON_CLOSE);
         vista.setVisible(true);
     }
 }

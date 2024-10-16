@@ -59,7 +59,7 @@ public class Ctrl_IngresoUsuario  implements ActionListener {
             MenuPrincipal modelo = new MenuPrincipal();
             
             Ctrl_MenuPrincipal controlador = new Ctrl_MenuPrincipal(vista,modelo);
-
+            vista.setDefaultCloseOperation(vista.DO_NOTHING_ON_CLOSE);
             vista.setVisible(true);              
         }
     }
@@ -82,7 +82,7 @@ public class Ctrl_IngresoUsuario  implements ActionListener {
         // Crea el formulario y el controlador
         FrmRecuperarClave vista = new FrmRecuperarClave();
         RecuperarClave modelo = new RecuperarClave();
-        
+        vista.setDefaultCloseOperation(vista.DO_NOTHING_ON_CLOSE);
         Ctrl_RecuperarClave controlador = new Ctrl_RecuperarClave(vista,modelo);
       
         vista.setVisible(true);  

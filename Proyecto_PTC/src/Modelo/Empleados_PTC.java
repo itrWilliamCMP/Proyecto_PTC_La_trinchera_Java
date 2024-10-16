@@ -60,52 +60,92 @@ public class Empleados_PTC {
 
     // Método para guardar empleado (Insertar)
     public void Guardar() {
-    Connection conexion = Conexion.getConexion();
-    
-    // Obtener la contraseña en formato hash
-    String contrasenaHash = HashUtil.generateSHA512Hash(getContrasena_empleado());
+        Connection conexion = Conexion.getConexion();
+        
+        // Validaciones
+        if (usuario_empleado.isEmpty() || correoElectronico.isEmpty() || contrasena_empleado.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    System.out.println("usuario: " + getUsuario_empleado());
-    System.out.println("correoElectronico: " + getCorreoElectronico());
-    System.out.println("contrasena_empleado: " + contrasenaHash);
+        // Validar formato de correo
+        if (!correoElectronico.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            JOptionPane.showMessageDialog(null, "Correo electrónico no válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    try {
-        PreparedStatement addEmpleado = conexion.prepareStatement("INSERT INTO Empleados_PTC (usuario_empleado, correoElectronico, contrasena_empleado) VALUES (?, ?, ?)");
+        // Validar longitud de la contraseña
+        if (contrasena_empleado.length() < 8) {
+            JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 8 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        addEmpleado.setString(1, getUsuario_empleado());
-        addEmpleado.setString(2, getCorreoElectronico());
-        addEmpleado.setString(3, contrasenaHash);
+        // Obtener la contraseña en formato hash
+        String contrasenaHash = HashUtil.generateSHA512Hash(getContrasena_empleado());
 
-        addEmpleado.executeUpdate();
+        System.out.println("usuario: " + getUsuario_empleado());
+        System.out.println("correoElectronico: " + getCorreoElectronico());
+        System.out.println("contrasena_empleado: " + contrasenaHash);
 
-    } catch (SQLException ex) {
-        System.out.println("Error en el modelo: método Guardar " + ex);
+        try {
+            PreparedStatement addEmpleado = conexion.prepareStatement("INSERT INTO Empleados_PTC (usuario_empleado, correoElectronico, contrasena_empleado) VALUES (?, ?, ?)");
+
+            addEmpleado.setString(1, getUsuario_empleado());
+            addEmpleado.setString(2, getCorreoElectronico());
+            addEmpleado.setString(3, contrasenaHash);
+
+            addEmpleado.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Error en el modelo: método Guardar " + ex);
+            JOptionPane.showMessageDialog(null, "Error al guardar el empleado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
-}
 
-// Método para actualizar empleado (solo usuario, correo y contraseña)
-public void Actualizar(JTable tabla) {
-    Connection conexion = Conexion.getConexion();
-    
-    // Obtener la contraseña en formato hash
-    String contrasenaHash = HashUtil.generateSHA512Hash(getContrasena_empleado());
+    // Método para actualizar empleado (solo usuario, correo y contraseña)
+    public void Actualizar(JTable tabla) {
+        Connection conexion = Conexion.getConexion();
+        
+        if (getId_empleado() <= 0) {
+            JOptionPane.showMessageDialog(null, "Empleado no válido para actualizar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    try {
-        PreparedStatement updateEmpleado = conexion.prepareStatement("UPDATE Empleados_PTC SET usuario_empleado = ?, correoElectronico = ?, contrasena_empleado = ? WHERE id_empleado = ?");
+        // Validaciones similares al método Guardar()
+        if (usuario_empleado.isEmpty() || correoElectronico.isEmpty() || contrasena_empleado.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        updateEmpleado.setString(1, getUsuario_empleado());
-        updateEmpleado.setString(2, getCorreoElectronico());
-        updateEmpleado.setString(3, contrasenaHash);
-        updateEmpleado.setInt(4, getId_empleado());
+        if (!correoElectronico.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            JOptionPane.showMessageDialog(null, "Correo electrónico no válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        updateEmpleado.executeUpdate();
+        if (contrasena_empleado.length() < 8) {
+            JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 8 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    } catch (SQLException ex) {
-        System.out.println("Error en el modelo: método Actualizar " + ex);
+        String contrasenaHash = HashUtil.generateSHA512Hash(getContrasena_empleado());
+
+        try {
+            PreparedStatement updateEmpleado = conexion.prepareStatement("UPDATE Empleados_PTC SET usuario_empleado = ?, correoElectronico = ?, contrasena_empleado = ? WHERE id_empleado = ?");
+
+            updateEmpleado.setString(1, getUsuario_empleado());
+            updateEmpleado.setString(2, getCorreoElectronico());
+            updateEmpleado.setString(3, contrasenaHash);
+            updateEmpleado.setInt(4, getId_empleado());
+
+            updateEmpleado.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Error en el modelo: método Actualizar " + ex);
+            JOptionPane.showMessageDialog(null, "Error al actualizar el empleado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
-}
 
-    
+    // Método para limpiar campos en la vista
     public void limpiar(FrmEmpleados_PTC vista) {
         vista.txtUsuarios.setText("");
         vista.txtCorreo.setText("");
@@ -115,6 +155,12 @@ public void Actualizar(JTable tabla) {
     // Método para eliminar empleado 
     public void Eliminar(JTable tabla) {
         Connection conexion = Conexion.getConexion();
+        
+        if (getId_empleado() <= 0) {
+            JOptionPane.showMessageDialog(null, "Empleado no válido para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
             PreparedStatement deleteEmpleado = conexion.prepareStatement("DELETE FROM Empleados_PTC WHERE id_empleado = ?");
 
@@ -124,6 +170,7 @@ public void Actualizar(JTable tabla) {
  
         } catch (SQLException ex) {
             System.out.println("Error en el modelo: método Eliminar " + ex);
+            JOptionPane.showMessageDialog(null, "Error al eliminar el empleado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -132,9 +179,15 @@ public void Actualizar(JTable tabla) {
         Connection conexion = Conexion.getConexion();
         DefaultTableModel modeloEmpleados = new DefaultTableModel();
         modeloEmpleados.setColumnIdentifiers(new Object[]{"id_empleado", "usuario_empleado", "correoElectronico", "contrasena_empleado", "CodigoTemporal"});
+        
         try {
             Statement statement = conexion.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM Empleados_PTC");
+
+            if (!rs.isBeforeFirst()) {  // Verificar si hay resultados
+                JOptionPane.showMessageDialog(null, "No se encontraron empleados.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
+
             while (rs.next()) {
                 modeloEmpleados.addRow(new Object[]{
                     rs.getInt("id_empleado"), 
@@ -147,6 +200,7 @@ public void Actualizar(JTable tabla) {
             tabla.setModel(modeloEmpleados);
         } catch (Exception e) {
             System.out.println("Error en el modelo: método Mostrar " + e);
+            JOptionPane.showMessageDialog(null, "Error al mostrar empleados.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -154,24 +208,19 @@ public void Actualizar(JTable tabla) {
     public void cargarDatosTabla(FrmEmpleados_PTC vista) {
         int filaSeleccionada = vista.jTblEmpleados.getSelectedRow();
         
-        System.out.println("filaSeleccionada = "+filaSeleccionada);
-        
-        System.out.println(vista.jTblEmpleados.getValueAt(filaSeleccionada, 0));
-        
-        if (filaSeleccionada != -1) {
-            String id_empleado = vista.jTblEmpleados.getValueAt(filaSeleccionada, 0).toString();            
-            String usuario_empleado = vista.jTblEmpleados.getValueAt(filaSeleccionada, 1).toString();
-            String correoElectronico = vista.jTblEmpleados.getValueAt(filaSeleccionada, 2).toString();
-            String contrasena_empleado = vista.jTblEmpleados.getValueAt(filaSeleccionada, 3).toString();
-            //tring CodigoTemporal = vista.jTblEmpleados.getValueAt(filaSeleccionada, 4).toString();
-
-            setId_empleado(Integer.parseInt(id_empleado));
-                        
-            vista.txtUsuarios.setText(usuario_empleado);
-            vista.txtCorreo.setText(correoElectronico);
-            vista.txtContrasena.setText(contrasena_empleado);
-           
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione una fila válida.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+        String id_empleado = vista.jTblEmpleados.getValueAt(filaSeleccionada, 0).toString();
+        String usuario_empleado = vista.jTblEmpleados.getValueAt(filaSeleccionada, 1).toString();
+        String correoElectronico = vista.jTblEmpleados.getValueAt(filaSeleccionada, 2).toString();
+        String contrasena_empleado = vista.jTblEmpleados.getValueAt(filaSeleccionada, 3).toString();
+
+        setId_empleado(Integer.parseInt(id_empleado));
+        vista.txtUsuarios.setText(usuario_empleado);
+        vista.txtCorreo.setText(correoElectronico);
+        vista.txtContrasena.setText(contrasena_empleado);
     }
 }
-
